@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Tea Timer</title>
+</head>
+<body>
+<span id="timeDisplay">15:00</span>
+<button id="startButton">Start</button>
+<script>
+var countdown; // @TODO
+var timerInterval = null;
+
+var firstInfusion = 15; // @TODO
+var nextInfusion = 3; // @TODO
+
+function StopTimer() {
+	window.clearInterval(timerInterval);
+	timerInterval = null;
+}
+
+function TimerTick() {
+	countdown--; // @TODO
+	timeDisplay.innerText = countdown;
+	if (countdown == 0) {
+		StopTimer();
+	}
+}
+
+startButton.onclick = function() {
+	if (timerInterval == null) {
+		countdown = 1000;
+		timerInterval = window.setInterval(TimerTick, 10);
+		startButton.innerText = "Stop";
+	} else {
+		StopTimer();
+		startButton.innerText = "Start over";
+	}
+}
+</script>
+</body>
+</html>
