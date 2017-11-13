@@ -10,8 +10,13 @@
 <span id="timeDisplay">15:00</span>
 <button id="startButton">Start</button>
 <script>
-var countdown; // @TODO
+var lastTime;
+var timeLeft;
 var timerInterval = null;
+var alerted;
+
+var beep1 = new Audio('audio/beep.wav');
+var beep2 = new Audio('audio/done.wav');
 
 var firstInfusion = 15; // @TODO
 var nextInfusion = 3; // @TODO
@@ -19,24 +24,33 @@ var nextInfusion = 3; // @TODO
 function StopTimer() {
 	window.clearInterval(timerInterval);
 	timerInterval = null;
+	startButton.innerText = "Start over";
 }
 
 function TimerTick() {
-	countdown--; // @TODO
-	timeDisplay.innerText = countdown;
-	if (countdown == 0) {
+	var now = new Date();
+	var elapsed = now - lastTime;
+	lastTime = now;
+	timeLeft -= elapsed;
+	timeDisplay.innerText = timeLeft / 1000;
+	if (alerted == false && timeLeft <= 5000) {
+		beep1.play();
+		alerted = true;
+	} else if (timeLeft <= 0) {
+		beep2.play();
 		StopTimer();
 	}
 }
 
 startButton.onclick = function() {
 	if (timerInterval == null) {
-		countdown = 1000;
+		alerted = false;
+		timeLeft = 10000; // @TODO
+		lastTime = new Date();
 		timerInterval = window.setInterval(TimerTick, 10);
 		startButton.innerText = "Stop";
 	} else {
 		StopTimer();
-		startButton.innerText = "Start over";
 	}
 }
 </script>
