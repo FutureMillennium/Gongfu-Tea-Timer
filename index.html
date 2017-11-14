@@ -14,6 +14,10 @@
 	<p>Infusion <span id="infusionNumSpan">1</span></p>
 	<span id="timeDisplay">15:00</span>
 	<button id="startButton">Start</button>
+	<p>
+		<button id="prevInfusionButton">Previous</button>
+		<button id="nextInfusionButton">Next</button>
+	</p>
 </div>
 
 <script>
@@ -32,12 +36,74 @@ var teaTypes = [
 	{
 		name: "Green",
 		firstInfusion: 15,
-		nextInfusion: 3,
+		nextInfusion: +3,
+		infusions: 5,
+		amount: [3, 3.5],
+		rinse: false,
 	},
 	{
-		name: "Black",
+		name: "Black (small leaf)",
 		firstInfusion: 10,
-		nextInfusion: 5,
+		nextInfusion: +5,
+		infusions: 8,
+		amount: 4.5,
+		rinse: true,
+	},
+	{
+		name: "Black (large leaf)",
+		firstInfusion: 15,
+		nextInfusion: +5,
+		infusions: 8,
+		amount: 4,
+		rinse: true,
+	},
+	{
+		name: "White",
+		firstInfusion: 20,
+		nextInfusion: +5,
+		infusions: 5,
+		amount: [3.5, 4],
+		rinse: false,
+	},
+	{
+		name: "Yellow",
+		firstInfusion: 15,
+		nextInfusion: +5,
+		infusions: 5,
+		amount: [3.5, 4],
+		rinse: false,
+	},
+	{
+		name: "Oolong (strip)",
+		firstInfusion: 20,
+		nextInfusion: +5,
+		infusions: 9,
+		amount: [4.5, 5],
+		rinse: true,
+	},
+	{
+		name: "Oolong (ball)",
+		firstInfusion: 25,
+		nextInfusion: +5,
+		infusions: 9,
+		amount: [6, 6.5],
+		rinse: true,
+	},
+	{
+		name: "PuErh (raw)",
+		firstInfusion: 10,
+		nextInfusion: +3,
+		infusions: 15,
+		amount: 5,
+		rinse: true,
+	},
+	{
+		name: "PuErh (ripe)",
+		firstInfusion: 10,
+		nextInfusion: +5,
+		infusions: 20,
+		amount: 5,
+		rinse: true,
 	},
 ];
 
@@ -58,9 +124,7 @@ function TimerTick() {
 	} else if (timeLeft <= 0) {
 		beep2.play();
 		StopTimer();
-		infusionNum++;
-		StartTea();
-		startButton.innerText = "Start";
+		NextInfusion();
 	}
 }
 
@@ -76,10 +140,20 @@ function StartTea() {
 	timeLeft = (curTea.firstInfusion + (curTea.nextInfusion * infusionNum)) * 1000;
 	infusionNumSpan.innerText = infusionNum + 1;
 	UpdateTimerDisplay();
+	startButton.innerText = "Start";
+	if (infusionNum == 0)
+		prevInfusionButton.hidden = true;
+	else if (prevInfusionButton.hidden == true)
+		prevInfusionButton.hidden = false;
 }
 
 function UpdateTimerDisplay() {
 	timeDisplay.innerText = Math.round(timeLeft / 10);
+}
+
+function NextInfusion() {
+	infusionNum++;
+	StartTea();
 }
 
 startButton.onclick = function() {
@@ -92,9 +166,18 @@ startButton.onclick = function() {
 		startButton.innerText = "Stop";
 	} else {
 		StopTimer();
-		startButton.innerText = "Start over";
+		StartTea();
 	}
 }
+
+prevInfusionButton.onclick = function() {
+	if (infusionNum > 0) {
+		infusionNum--;
+		StartTea();
+	}
+}
+
+nextInfusionButton.onclick = NextInfusion;
 
 
 timerUI.hidden = true;
