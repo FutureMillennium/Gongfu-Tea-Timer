@@ -44,6 +44,10 @@ function TimerTick() {
 
 startButton.onclick = function() {
 	if (timerInterval == null) {
+		beep1.play();
+		beep1.pause();
+		beep2.play();
+		beep2.pause();
 		alerted = false;
 		timeLeft = 10000; // @TODO
 		lastTime = new Date();
