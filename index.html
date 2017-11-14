@@ -11,16 +11,24 @@
 <p id="teaSelection"></p>
 
 <div id="timerUI">
+	<p id="teaNameDiv"></p>
 	<p>Infusion <span id="infusionNumSpan">1</span></p>
 	<span id="timeDisplay">15:00</span>
 	<button id="startButton">Start</button>
-	<p>
+	<p id="infusionSwitcherDiv">
 		<button id="prevInfusionButton">Previous</button>
 		<button id="nextInfusionButton">Next</button>
 	</p>
 </div>
 
+<div id="sessionSwitcherDiv">
+	<div id="sessionsDiv"></div>
+
+	<button id="newSessionButton">New session</button>
+</div>
+
 <script>
+'use strict';
 var lastTime;
 var timeLeft;
 var timerInterval = null;
@@ -29,8 +37,9 @@ var alerted = false;
 var beep1 = new Audio('audio/beep.wav');
 var beep2 = new Audio('audio/done.wav');
 
-var infusionNum = 0;
-var curTea;
+var sessions = new Array();
+
+var curSession = null;
 
 var teaTypes = [
 	{
@@ -107,9 +116,12 @@ var teaTypes = [
 	},
 ];
 
+
 function StopTimer() {
 	window.clearInterval(timerInterval);
 	timerInterval = null;
+	sessionSwitcherDiv.hidden = false;
+	infusionSwitcherDiv.hidden = false;
 }
 
 function TimerTick() {
@@ -129,19 +141,25 @@ function TimerTick() {
 }
 
 function SelectTea(tea) {
+	curSession.infusionNum = 0;
+	curSession.tea = tea;
+	UpdateTea();
+}
+
+function UpdateTea() {
 	timerUI.hidden = false;
 	teaSelection.hidden = true;
-	infusionNum = 0;
-	curTea = tea;
 	StartTea();
+	newSessionButton.hidden = false;
+	teaNameDiv.innerText = curSession.tea.name;
 }
 
 function StartTea() {
-	timeLeft = (curTea.firstInfusion + (curTea.nextInfusion * infusionNum)) * 1000;
-	infusionNumSpan.innerText = infusionNum + 1;
+	timeLeft = (curSession.tea.firstInfusion + (curSession.tea.nextInfusion * curSession.infusionNum)) * 1000;
+	infusionNumSpan.innerText = curSession.infusionNum + 1;
 	UpdateTimerDisplay();
 	startButton.innerText = "Start";
-	if (infusionNum == 0)
+	if (curSession.infusionNum == 0)
 		prevInfusionButton.hidden = true;
 	else if (prevInfusionButton.hidden == true)
 		prevInfusionButton.hidden = false;
@@ -152,9 +170,49 @@ function UpdateTimerDisplay() {
 }
 
 function NextInfusion() {
-	infusionNum++;
+	curSession.infusionNum++;
 	StartTea();
 }
+
+function NewSession() {
+	if (sessions.length == 1)
+		sessionsDiv.children[sessionsDiv.children.length - 1].hidden = false;
+
+	curSession = {
+		tea: null,
+		infusionNum: 0,
+	}
+	sessions.push(curSession);
+
+	ShowSelectTea();
+	newSessionButton.hidden = true;
+
+	var newEl = document.createElement('button');
+	newEl.innerText = sessions.length;
+	(function(i) {
+	newEl.onclick = function() {
+		if (timerInterval == null) {
+			curSession = sessions[i];
+			if (curSession.tea == null) {
+				ShowSelectTea();
+			} else {
+				UpdateTea();
+			}
+		}
+	};
+	})(sessions.length - 1);
+	if (sessions.length == 1)
+		newEl.hidden = true;
+
+	sessionsDiv.appendChild(newEl);
+}
+
+function ShowSelectTea() {
+	timerUI.hidden = true;
+	teaSelection.hidden = false;
+}
+
+
 
 startButton.onclick = function() {
 	if (timerInterval == null) {
@@ -164,6 +222,8 @@ startButton.onclick = function() {
 		lastTime = new Date();
 		timerInterval = window.setInterval(TimerTick, 10);
 		startButton.innerText = "Stop";
+		infusionSwitcherDiv.hidden = true;
+		sessionSwitcherDiv.hidden = true;
 	} else {
 		StopTimer();
 		StartTea();
@@ -171,16 +231,20 @@ startButton.onclick = function() {
 }
 
 prevInfusionButton.onclick = function() {
-	if (infusionNum > 0) {
-		infusionNum--;
+	if (curSession.infusionNum > 0) {
+		curSession.infusionNum--;
 		StartTea();
 	}
 }
 
+teaNameDiv.onclick = function() {
+	if (timerInterval == null)
+		ShowSelectTea();
+}
+
 nextInfusionButton.onclick = NextInfusion;
+newSessionButton.onclick = NewSession;
 
-
-timerUI.hidden = true;
 
 for (var i in teaTypes) {
 	(function(tea) {
@@ -192,6 +256,8 @@ for (var i in teaTypes) {
 		teaSelection.appendChild(newEl);
 	})(teaTypes[i]);
 }
+
+NewSession();
 
 </script>
 </body>
