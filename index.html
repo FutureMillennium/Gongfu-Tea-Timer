@@ -5,6 +5,29 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Gongfu Tea Timer</title>
+<style>
+body {
+	margin: 25px;
+	background: #000;
+	color: #fff;
+}
+.startButtonP {
+	text-align: center;
+	margin-top: calc(100vh - 400px);
+}
+#startButton {
+	border: none;
+	background: #1abf4d;
+	color: #fff;
+	border-radius: 100%;
+	width: 200px;
+	height: 200px;
+	font-size: 36px;
+}
+#startButton.stop {
+	background: #bf1f1a;
+}
+</style>
 </head>
 <body>
 
@@ -14,7 +37,7 @@
 	<p id="teaNameDiv"></p>
 	<p>Infusion <span id="infusionNumSpan">1</span></p>
 	<span id="timeDisplay">15:00</span>
-	<button id="startButton">Start</button>
+	<p class="startButtonP"><button id="startButton">Start</button></p>
 	<p id="infusionSwitcherDiv">
 		<button id="prevInfusionButton">Previous</button>
 		<button id="nextInfusionButton">Next</button>
@@ -159,6 +182,7 @@ function StartTea() {
 	infusionNumSpan.innerText = curSession.infusionNum + 1;
 	UpdateTimerDisplay();
 	startButton.innerText = "Start";
+	startButton.className = '';
 	if (curSession.infusionNum == 0)
 		prevInfusionButton.hidden = true;
 	else if (prevInfusionButton.hidden == true)
@@ -222,6 +246,7 @@ startButton.onclick = function() {
 		lastTime = new Date();
 		timerInterval = window.setInterval(TimerTick, 10);
 		startButton.innerText = "Stop";
+		startButton.className = 'stop';
 		infusionSwitcherDiv.hidden = true;
 		sessionSwitcherDiv.hidden = true;
 	} else {
