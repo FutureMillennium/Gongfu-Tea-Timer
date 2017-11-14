@@ -4,27 +4,46 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Tea Timer</title>
+	<title>Gongfu Tea Timer</title>
 </head>
 <body>
-<span id="timeDisplay">15:00</span>
-<button id="startButton">Start</button>
+
+<p id="teaSelection"></p>
+
+<div id="timerUI">
+	<p>Infusion <span id="infusionNumSpan">1</span></p>
+	<span id="timeDisplay">15:00</span>
+	<button id="startButton">Start</button>
+</div>
+
 <script>
 var lastTime;
 var timeLeft;
 var timerInterval = null;
-var alerted;
+var alerted = false;
 
 var beep1 = new Audio('audio/beep.wav');
 var beep2 = new Audio('audio/done.wav');
 
-var firstInfusion = 15; // @TODO
-var nextInfusion = 3; // @TODO
+var infusionNum = 0;
+var curTea;
+
+var teaTypes = [
+	{
+		name: "Green",
+		firstInfusion: 15,
+		nextInfusion: 3,
+	},
+	{
+		name: "Black",
+		firstInfusion: 10,
+		nextInfusion: 5,
+	},
+];
 
 function StopTimer() {
 	window.clearInterval(timerInterval);
 	timerInterval = null;
-	startButton.innerText = "Start over";
 }
 
 function TimerTick() {
@@ -32,31 +51,65 @@ function TimerTick() {
 	var elapsed = now - lastTime;
 	lastTime = now;
 	timeLeft -= elapsed;
-	timeDisplay.innerText = timeLeft / 1000;
+	UpdateTimerDisplay();
 	if (alerted == false && timeLeft <= 5000) {
 		beep1.play();
 		alerted = true;
 	} else if (timeLeft <= 0) {
 		beep2.play();
 		StopTimer();
+		infusionNum++;
+		StartTea();
+		startButton.innerText = "Start";
 	}
+}
+
+function SelectTea(tea) {
+	timerUI.hidden = false;
+	teaSelection.hidden = true;
+	infusionNum = 0;
+	curTea = tea;
+	StartTea();
+}
+
+function StartTea() {
+	timeLeft = (curTea.firstInfusion + (curTea.nextInfusion * infusionNum)) * 1000;
+	infusionNumSpan.innerText = infusionNum + 1;
+	UpdateTimerDisplay();
+}
+
+function UpdateTimerDisplay() {
+	timeDisplay.innerText = Math.round(timeLeft / 10);
 }
 
 startButton.onclick = function() {
 	if (timerInterval == null) {
-		beep1.play();
-		beep1.pause();
-		beep2.play();
-		beep2.pause();
+		beep1.load();
+		beep2.load();
 		alerted = false;
-		timeLeft = 10000; // @TODO
 		lastTime = new Date();
 		timerInterval = window.setInterval(TimerTick, 10);
 		startButton.innerText = "Stop";
 	} else {
 		StopTimer();
+		startButton.innerText = "Start over";
 	}
 }
+
+
+timerUI.hidden = true;
+
+for (var i in teaTypes) {
+	(function(tea) {
+		var newEl = document.createElement('button');
+		newEl.innerText = tea.name;
+		newEl.onclick = function() {
+			SelectTea(tea);
+		};
+		teaSelection.appendChild(newEl);
+	})(teaTypes[i]);
+}
+
 </script>
 </body>
 </html>
