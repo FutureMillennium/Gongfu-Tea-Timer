@@ -24,6 +24,16 @@ button {
 	border: 1px solid #e07524;
 	border-radius: 10px;
 }
+button:hover {
+	background: #e0752440;
+}
+button:focus {
+	outline: none;
+}
+button:active {
+	background: #e07524;
+	outline: none;
+}
 #timerUI {
 	padding-top: 100px;
 	text-align: center;
