@@ -1,0 +1,102 @@
+body {
+	margin: 17px;
+	background: #0d0d0d;
+	color: #fff;
+	font-family: sans-serif;
+	font-size: 21px;
+}
+h1 {
+	font-size: 36px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 0;
+	background: #0d0d0dcc;
+	padding: 17px 17px 10px;
+	right: 0;
+	border-bottom: 1px solid #0d0d0d;
+}
+button {
+	padding: 15px 20px;
+	font-size: 21px;
+	background: #0d0d0d;
+	color: #fff;
+	border: 1px solid #e07524;
+	border-radius: 10px;
+}
+#timerUI {
+	padding-top: 100px;
+	text-align: center;
+}
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 0;
+	background: #1e1e1ecc;
+	padding: 17px 17px 10px;
+	right: 0;
+	border-bottom: 1px solid #313131;
+}
+.header p {
+	margin: 5px 0 0 0;
+}
+.header p:first-of-type {
+	margin: 0;
+}
+#teaNameDiv {
+	font-weight: bold;
+}
+#timeDisplay {
+	font-size: 72px;
+}
+.startButtonP {
+	text-align: center;
+	margin-top: calc(100vh - 550px);
+}
+#startButton {
+	border: none;
+	background: #1a361e;
+	color: #4cd964;
+	border-radius: 100%;
+	width: 250px;
+	height: 250px;
+	font-size: 36px;
+}
+#startButton.stop {
+	background: #3d1614;
+	color: #ff3b30;
+}
+#infusionSwitcherDiv {
+	height: 50px;
+}
+#infusionSwitcherDiv button {
+	width: 128px;
+}
+#teaSelection {
+	padding-top: 60px;
+}
+#teaSelection button {
+	display: block;
+	width: 100%;
+	background: #000;
+	color: #fff;
+	border: none;
+	border-bottom: 1px solid #e07524;
+	border-radius: 0;
+}
+#teaSelection button:first-of-type {
+	border-top: 1px solid #e07524;
+}
+#sessionSwitcherDiv {
+	margin-top: 50px;
+}
+#sessionsDiv button {
+	width: 60px;
+	height: 60px;
+	border-radius: 100%;
+	margin: 0 15px 15px 0;
+}
+#sessionsDiv button.active {
+	background: #e07524;
+}
