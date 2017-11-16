@@ -159,6 +159,8 @@ function UpdateTea() {
 	teaSelection.hidden = true;
 	StartTea();
 	newSessionButton.hidden = false;
+	if (sessionSwitcherDiv.hidden == true)
+		sessionSwitcherDiv.hidden = false;
 	teaNameDiv.innerText = curSession.tea.name;
 }
 
@@ -184,8 +186,11 @@ function NextInfusion() {
 }
 
 function NewSession() {
-	if (sessions.length == 1)
+	if (sessions.length == 1) {
 		sessionsDiv.children[sessionsDiv.children.length - 1].hidden = false;
+	} else if (sessions.length == 0) {
+		sessionSwitcherDiv.hidden = true;
+	}
 
 	curSession = {
 		tea: null,

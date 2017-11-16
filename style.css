@@ -1,5 +1,5 @@
 body {
-	margin: 17px;
+	margin: 0;
 	background: #0d0d0d;
 	color: #fff;
 	font-family: sans-serif;
@@ -19,7 +19,7 @@ h1 {
 button {
 	padding: 15px 20px;
 	font-size: 21px;
-	background: #0d0d0d;
+	background: transparent;
 	color: #fff;
 	border: 1px solid #e07524;
 	border-radius: 10px;
@@ -74,13 +74,12 @@ button {
 	width: 128px;
 }
 #teaSelection {
-	padding-top: 60px;
+	margin: 17px;
+	padding-top: 55px;
 }
 #teaSelection button {
 	display: block;
 	width: 100%;
-	background: #000;
-	color: #fff;
 	border: none;
 	border-bottom: 1px solid #e07524;
 	border-radius: 0;
@@ -89,6 +88,9 @@ button {
 	border-top: 1px solid #e07524;
 }
 #sessionSwitcherDiv {
+	background: #1e1e1ecc;
+	padding: 17px;
+	border-top: 1px solid #313131;
 	margin-top: 50px;
 }
 #sessionsDiv button {
