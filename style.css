@@ -24,14 +24,7 @@ button {
 	border: 1px solid #e07524;
 	border-radius: 10px;
 }
-button:hover {
-	background: #e0752440;
-}
 button:focus {
-	outline: none;
-}
-button:active {
-	background: #e07524;
 	outline: none;
 }
 #timerUI {
@@ -111,4 +104,15 @@ button:active {
 }
 #sessionsDiv button.active {
 	background: #e07524;
+}
+
+@media (hover:hover) {
+    button:hover {
+		background: #e0752440;
+	}
+}
+
+button:active {
+	background: #e07524;
+	outline: none;
 }
