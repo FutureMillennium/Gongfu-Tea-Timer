@@ -124,6 +124,12 @@ var teaTypes = [
 	},
 ];
 
+function PadZero(number) {
+	if (number < 10)
+		return '0' + number;
+	else
+		return number;
+}
 
 function StopTimer() {
 	window.clearInterval(timerInterval);
@@ -134,9 +140,9 @@ function StopTimer() {
 
 function TimerTick() {
 	var now = new Date();
-	var elapsed = now - lastTime;
+	var elapsed = new Date(now - lastTime);
 	lastTime = now;
-	timeLeft -= elapsed;
+	timeLeft = new Date(timeLeft - elapsed);
 	UpdateTimerDisplay();
 	if (alerted == false && timeLeft <= 5000) {
 		beep1.play();
@@ -165,7 +171,7 @@ function UpdateTea() {
 }
 
 function StartTea() {
-	timeLeft = (curSession.tea.firstInfusion + (curSession.tea.nextInfusion * curSession.infusionNum)) * 1000;
+	timeLeft = new Date((curSession.tea.firstInfusion + (curSession.tea.nextInfusion * curSession.infusionNum)) * 1000);
 	infusionNumSpan.innerText = curSession.infusionNum + 1;
 	UpdateTimerDisplay();
 	startButton.innerText = "Start";
@@ -177,7 +183,10 @@ function StartTea() {
 }
 
 function UpdateTimerDisplay() {
-	timeDisplay.innerText = Math.round(timeLeft / 10);
+	var t = PadZero(timeLeft.getSeconds()) + "," + PadZero(Math.floor(timeLeft.getMilliseconds() / 10));
+	if (timeLeft.getMinutes() > 0)
+		t = timeLeft.getMinutes() + ":" + t;
+	timeDisplay.innerText = t;
 }
 
 function NextInfusion() {

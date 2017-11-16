@@ -1,6 +1,6 @@
 body {
 	margin: 0;
-	background: #0d0d0d;
+	background: #000;
 	color: #fff;
 	font-family: sans-serif;
 	font-size: 21px;
@@ -11,10 +11,10 @@ h1 {
 	top: 0;
 	left: 0;
 	margin: 0;
-	background: #0d0d0dcc;
+	background: #000c;
 	padding: 17px 17px 10px;
 	right: 0;
-	border-bottom: 1px solid #0d0d0d;
+	border-bottom: 1px solid #000;
 }
 button {
 	padding: 15px 20px;
